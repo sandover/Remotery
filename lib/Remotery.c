@@ -5672,6 +5672,16 @@ static GLenum rmtglGetError(void)
     #endif
 #endif
 
+#if defined(__APPLE__)
+#include <dlfcn.h>
+void *NSGLGetProcAddress(char const *name) {
+  static void *lib = NULL;
+  if (lib == NULL) {
+        lib = dlopen("/System/Library/Frameworks/OpenGL.framework/Versions/Current/OpenGL", RTLD_LAZY);
+    }
+    return lib ? dlsym(lib, name) : NULL;
+}
+#endif
 
 static void* rmtglGetProcAddress(OpenGL* opengl, const char* symbol)
 {
@@ -5690,7 +5700,7 @@ static void* rmtglGetProcAddress(OpenGL* opengl, const char* symbol)
 
     #elif defined(__APPLE__) && !defined(GLEW_APPLE_GLX)
 
-        return NSGLGetProcAddress((const GLubyte*)symbol);
+        return NSGLGetProcAddress(symbol);
 
     #elif defined(RMT_PLATFORM_LINUX)
 
