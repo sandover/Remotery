@@ -22,8 +22,8 @@
 	/* Allows movement of the window to exceed browser region without triggering scroll bars */
 	position:fixed;
 
-	/* Clip all contents to the window border */
-	overflow: hidden;
+  overflow:scroll;
+  overflow-x:hidden;
 
 	background: #404040;
 
